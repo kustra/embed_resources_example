@@ -1,0 +1,7 @@
+# Append the lines below to your platform.local.txt
+# Create platform.local.txt in the same directory as platform.txt if it doesn't exist yet. Determine the platform.txt in effect: https://forum.arduino.cc/t/how-do-determine-which-platform-txt-file-is-in-effect-during-compile/1052183
+# If your platform.local.txt already has recipe.hooks.prebuild.N.pattern lines, you may need to adjust the 1 in the keys below.
+# Arduino IDE needs to be restarted for changes in this file to take effect.
+
+recipe.hooks.prebuild.1.pattern=bash -c '[ ! -f "{build.source.path}/scripts/embed_resources.py" ] || "{build.source.path}/scripts/embed_resources.py" "{build.source.path}/data" "{build.path}/sketch"'
+recipe.hooks.prebuild.1.pattern.windows=cmd /c IF EXIST "{build.source.path}\scripts\embed_resources.py" ( "{build.source.path}\scripts\embed_resources.py "{build.source.path}/data" "{build.path}/sketch" )
