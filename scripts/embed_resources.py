@@ -12,9 +12,11 @@ def process_directory(input_dir: Path, output_dir: Path):
             var_name = file_path.name.replace('.', '_')
             header_file = output_dir / f"{file_path.stem}{file_path.suffix.replace('.', '_')}.h"
             generate_header(file_path, header_file, var_name)
-            print(f"Generated: {header_file}")
 
 def generate_header(file_path: Path, output_path: Path, var_name: str):
+    if file_path.stat().st_mtime < output_path.stat().st_mtime:
+        return
+
     with file_path.open('r', encoding="utf-8") as f:
         content = f.read()
     
@@ -28,6 +30,7 @@ const char {var_name}[] = R"rawliteral({content})rawliteral";
     
     with output_path.open("w", encoding="utf-8") as f:
         f.write(header_content)
+        print(f"Generated: {output_path}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Embed text resources into C++ headers as string literals.")
