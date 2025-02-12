@@ -14,7 +14,7 @@ def process_directory(input_dir: Path, output_dir: Path):
             generate_header(file_path, header_file, var_name)
 
 def generate_header(file_path: Path, output_path: Path, var_name: str):
-    if file_path.stat().st_mtime < output_path.stat().st_mtime:
+    if output_path.exists() and file_path.stat().st_mtime < output_path.stat().st_mtime:
         return
 
     with file_path.open('r', encoding="utf-8") as f:
